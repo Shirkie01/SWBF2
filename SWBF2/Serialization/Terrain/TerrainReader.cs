@@ -5,6 +5,9 @@ using System.Text;
 
 namespace SWBF2.Serialization
 {
+    /// <summary>
+    /// Reads data from the SWBF/SWBF2 TER file format.
+    /// </summary>
     internal class TerrainReader : BinaryReader
     {
         public TerrainReader(Stream stream) : base(stream)
@@ -93,8 +96,8 @@ namespace SWBF2.Serialization
             //char[32]  Detail texture name.
             foreach (var layer in header.TextureLayers)
             {
-                layer.DiffuseTexture = Encoding.UTF8.GetString(ReadBytes(32)).Trim('\0');
-                layer.DetailTexture = Encoding.UTF8.GetString(ReadBytes(32)).Trim('\0');
+                layer.DiffuseTexture = ReadString();
+                layer.DetailTexture = ReadString();
             }
 
             // Read water layers
@@ -105,7 +108,7 @@ namespace SWBF2.Serialization
 
             for (int i = 0; i < header.DecalTextureNames.Length; i++)
             {
-                header.DecalTextureNames[i] = Encoding.UTF8.GetString(ReadBytes(32)).Trim('\0');
+                header.DecalTextureNames[i] = ReadString();
             }
 
             header.DecalLength = ReadInt32();
@@ -125,7 +128,8 @@ namespace SWBF2.Serialization
         {
             var water = new WaterLayer();
 
-            // Height is listed twice. Possibly for two layers bordering another
+            // Height is listed twice. Possibly for two layers bordering another, or maybe one was
+            // meant to be damage (based on disassembly).
             water.Height1 = ReadSingle();
             water.Height2 = ReadSingle();
 
@@ -136,7 +140,7 @@ namespace SWBF2.Serialization
             water.UVAnimation.Velocity = new PointF(ReadSingle(), ReadSingle());
             water.UVAnimation.Repeat = new PointF(ReadSingle(), ReadSingle());
             water.Color = ReadColor();
-            water.TextureName = Encoding.UTF8.GetString(ReadBytes(32)).Trim('\0');
+            water.TextureName = ReadString();
 
             return water;
         }
@@ -146,10 +150,19 @@ namespace SWBF2.Serialization
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <returns>A color</returns>
-        private Color ReadColor()
+        public Color ReadColor()
         {
             byte[] bytes = ReadBytes(4);
             return Color.FromArgb(bytes[3], bytes[2], bytes[1], bytes[0]);
+        }
+
+        /// <summary>
+        /// Reads a string from the TER file.
+        /// </summary>
+        /// <returns>A string</returns>
+        public override string ReadString()
+        {
+            return Encoding.UTF8.GetString(ReadBytes(32)).Trim('\0');
         }
 
         private TerrainBlock[,] ReadTerrainBlocks(int gridSize)
@@ -275,6 +288,11 @@ namespace SWBF2.Serialization
             return blocks;
         }
 
+        /// <summary>
+        /// Read the water layer ids for each block.
+        /// </summary>
+        /// <param name="gridSize">The size of the grid</param>
+        /// <param name="blocks">The terrain blocks to write the water layer ids to.</param>
         private void ReadWaterLayerIds(int gridSize, TerrainBlock[,] blocks)
         {
             TerrainUtil.ForEveryPoint(gridSize, (x, y) =>
@@ -301,12 +319,18 @@ namespace SWBF2.Serialization
             }, 4);
         }
 
+        /// <summary>
+        /// Read the foliage data for each block.
+        /// </summary>
+        /// <param name="gridSize">The size of the grid</param>
+        /// <param name="blocks">The terrain blocks to write the foliage data to</param>
         private void ReadFoliage(int gridSize, TerrainBlock[,] blocks)
         {
             // Foliage is stored as a list of bytes. If there are less than 1024 bytes, the file is
             // filled with zeros to reach 1024. The bytes stored in the file expand outward to fill
             // this 1024 byte area. A 32x32 terrain will be: 00 00 00 00 11 11 11 11 00 00 00 00,
             // while a filled 64x64 terrain will have bytes: 00 00 11 11 11 11 11 11 11 11 00 00
+            //
             // Update: It's a list of nibbles, not bytes. A terrain containing foliage for every
             // other vertex will look like 01 01 01 01 01
 
@@ -337,6 +361,14 @@ namespace SWBF2.Serialization
             }
         }
 
+        /// <summary>
+        /// Maps the Texture bytes to the Texture layer Id.
+        /// </summary>
+        /// <param name="first">The first byte of the texture layer ids (0-7)</param>
+        /// <param name="second">The second byte to the texture layer ids (8-15)</param>
+        /// <returns>
+        /// Array of 16 bools, specifying whether the texture id is applied to the current block.
+        /// </returns>
         private bool[] MapTextureBytesToTextureLayerId(byte first, byte second)
         {
             bool[] textureLayerIds = new bool[16];
@@ -360,7 +392,7 @@ namespace SWBF2.Serialization
             return textureLayerIds;
         }
 
-        private void ReadEndOfFile(Terrain terrain)
+        public void ReadEndOfFile(Terrain terrain)
         {
             // Unknown. Appears to be related to gridsize
             terrain.UnknownBytes1 = ReadBytes(terrain.UnknownBytes1.Length);

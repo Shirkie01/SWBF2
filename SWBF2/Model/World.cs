@@ -9,9 +9,11 @@ namespace SWBF2
     public class World
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(World));
+
         public IList<GameMode> GameModes = new List<GameMode>();
         public IList<Layer> Layers = new List<Layer>();
         public Terrain Terrain { get; set; }
+        public IList<Barrier> Barriers { get; } = new List<Barrier>();
 
         public static World LoadFromFile(string path)
         {

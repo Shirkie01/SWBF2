@@ -2,6 +2,9 @@
 
 namespace SWBF2.Serialization
 {
+    /// <summary>
+    /// Reads or writes a SWBF/SWBF2 TER file.
+    /// </summary>
     public class TerrainFormatter : ITypedFormatter<Terrain>
     {
         /// <summary>

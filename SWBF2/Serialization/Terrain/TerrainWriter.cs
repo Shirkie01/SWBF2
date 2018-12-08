@@ -6,6 +6,9 @@ using System.Text;
 
 namespace SWBF2.Serialization
 {
+    /// <summary>
+    /// Writes data in the SWBF/SWBF2 TER file format.
+    /// </summary>
     internal class TerrainWriter : BinaryWriter
     {
         public TerrainWriter(Stream stream) : base(stream)
@@ -18,7 +21,7 @@ namespace SWBF2.Serialization
 
             if (BaseStream.Position != 2821)
             {
-                throw new InvalidProgramException("Header is invalid");
+                throw new InvalidOperationException("Header is invalid");
             }
 
             var gridSize = terrain.Header.GridSize;
@@ -33,7 +36,7 @@ namespace SWBF2.Serialization
 
             if (BaseStream.Position != expectedPosition)
             {
-                throw new InvalidProgramException("Heights are invalid");
+                throw new InvalidOperationException("Heights are invalid");
             }
 
             // Colors
@@ -45,7 +48,7 @@ namespace SWBF2.Serialization
 
             if (BaseStream.Position != expectedPosition)
             {
-                throw new InvalidProgramException("Colors are invalid");
+                throw new InvalidOperationException("Colors are invalid");
             }
 
             // More Colors
@@ -56,7 +59,7 @@ namespace SWBF2.Serialization
             });
             if (BaseStream.Position != expectedPosition)
             {
-                throw new InvalidProgramException("Colors are invalid");
+                throw new InvalidOperationException("Colors are invalid");
             }
 
             // Texture alphas
@@ -72,7 +75,7 @@ namespace SWBF2.Serialization
 
             if (BaseStream.Position != expectedPosition)
             {
-                throw new InvalidProgramException("TextureAlphas are invalid");
+                throw new InvalidOperationException("TextureAlphas are invalid");
             }
 
             // Write the first blend height of every 4x4 block
@@ -84,7 +87,7 @@ namespace SWBF2.Serialization
 
             if (BaseStream.Position != expectedPosition)
             {
-                throw new InvalidProgramException("BlendHeight1 values are invalid");
+                throw new InvalidOperationException("BlendHeight1 values are invalid");
             }
 
             // Write the second blend height of every 4x4 block
@@ -96,7 +99,7 @@ namespace SWBF2.Serialization
 
             if (BaseStream.Position != expectedPosition)
             {
-                throw new InvalidProgramException("BlendHeight2 values are invalid");
+                throw new InvalidOperationException("BlendHeight2 values are invalid");
             }
 
             // Write the water id info. Fixed size
@@ -115,7 +118,7 @@ namespace SWBF2.Serialization
 
             if (BaseStream.Position != expectedPosition)
             {
-                throw new InvalidProgramException("WaterIds are invalid");
+                throw new InvalidOperationException("WaterIds are invalid");
             }
 
             // Foliage is a fixed size
@@ -124,7 +127,7 @@ namespace SWBF2.Serialization
 
             if (BaseStream.Position != expectedPosition)
             {
-                throw new InvalidProgramException("Foliage is invalid");
+                throw new InvalidOperationException("Foliage is invalid");
             }
 
             WriteEndOfFile(terrain);
@@ -180,20 +183,23 @@ namespace SWBF2.Serialization
                 Write(header.SWBF2Byte);
             }
 
+            // Write the texture-layer texture names
             foreach (var layer in header.TextureLayers)
             {
-                Write(Encoding.UTF8.GetBytes(layer.DiffuseTexture.PadRight(32, '\0')));
-                Write(Encoding.UTF8.GetBytes(layer.DetailTexture.PadRight(32, '\0')));
+                Write(layer.DiffuseTexture);
+                Write(layer.DetailTexture);
             }
 
+            // Write the water layers
             foreach (var waterLayer in header.WaterLayers)
             {
                 Write(waterLayer);
             }
 
-            foreach (var decalTex in header.DecalTextureNames)
+            // Write the road decal texture names
+            foreach (var decalTexName in header.DecalTextureNames)
             {
-                Write(Encoding.UTF8.GetBytes(decalTex.PadRight(32, '\0')));
+                Write(decalTexName);
             }
 
             Write(header.DecalLength * 176);
@@ -202,31 +208,44 @@ namespace SWBF2.Serialization
             Write(header.UnknownBytes);
         }
 
-        private void Write(WaterLayer water)
+        /// <summary>
+        /// Writes a water layer
+        /// </summary>
+        /// <param name="layer">The water layer to write</param>
+        public void Write(WaterLayer layer)
         {
-            // Height is stored twice. May have been intended for future use.
-            Write(water.Height1);
-            Write(water.Height2);
+            // Height is stored twice. May have been intended for future use. One of these may have
+            // been meant to be damage.
+            Write(layer.Height1);
+            Write(layer.Height2);
 
-            Write(water.Unknown1);
-            Write(water.Unknown2);
+            Write(layer.Unknown1);
+            Write(layer.Unknown2);
 
-            Write(water.UVAnimation.Velocity.X);
-            Write(water.UVAnimation.Velocity.Y);
-            Write(water.UVAnimation.Repeat.X);
-            Write(water.UVAnimation.Repeat.Y);
-            Write(water.Color);
-            Write(Encoding.UTF8.GetBytes(water.TextureName.PadRight(32, '\0')));
+            Write(layer.UVAnimation.Velocity.X);
+            Write(layer.UVAnimation.Velocity.Y);
+            Write(layer.UVAnimation.Repeat.X);
+            Write(layer.UVAnimation.Repeat.Y);
+            Write(layer.Color);
+            Write(layer.TextureName);
         }
 
         /// <summary>
         /// Writes the color to the TER file. Stored as BGRA
         /// </summary>
-        /// <param name="writer">The writer</param>
         /// <param name="color">The color</param>
-        private void Write(Color color)
+        public void Write(Color color)
         {
             Write(new byte[] { color.B, color.G, color.R, color.A });
+        }
+
+        /// <summary>
+        /// Write a string to the TER file. Stored as 32 bytes, zero terminated.
+        /// </summary>
+        /// <param name="s">The string</param>
+        public override void Write(string s)
+        {
+            Write(Encoding.UTF8.GetBytes(s.PadRight(32, '\0')));
         }
 
         /// <summary>
@@ -283,7 +302,7 @@ namespace SWBF2.Serialization
 
                 if (valuesToWrite.Length % 2 != 0)
                 {
-                    throw new InvalidProgramException("The foliage values must be a multiple of 2");
+                    throw new InvalidOperationException("The foliage values must be a multiple of 2");
                 }
 
                 var hex = valuesToWrite.ToString();
@@ -303,7 +322,9 @@ namespace SWBF2.Serialization
         private void WriteEndOfFile(Terrain terrain)
         {
             // Both unknowns below may be related to Decal Edit mode (F11) in the editor. (3 floats
-            // every fourth block:scale x,y, and rotation?)
+            // every fourth block:scale, x, y, and rotation?)
+
+            // More detail: These blocks are almost definitely related to objects which cut the terrain.
 
             // Unknown. Appears to be related to gridsize
             Write(terrain.UnknownBytes1);
