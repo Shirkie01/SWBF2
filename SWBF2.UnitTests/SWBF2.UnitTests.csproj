@@ -50,7 +50,8 @@
   <ItemGroup>
     <Compile Include="HintTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SerializationTests.cs" />
+    <Compile Include="Serialization\BarrierTests.cs" />
+    <Compile Include="Serialization\TerrainTests.cs" />
     <Compile Include="WorldTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -713,6 +714,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\COR\world1\cor1.BAR">
       <Link>Data\assets\worlds\COR\world1\cor1.BAR</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\COR\world1\cor1.bnd">
       <Link>Data\assets\worlds\COR\world1\cor1.bnd</Link>
@@ -1307,6 +1309,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\DAG\world1\dag1.BAR">
       <Link>Data\assets\worlds\DAG\world1\dag1.BAR</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\DAG\world1\dag1.BND">
       <Link>Data\assets\worlds\DAG\world1\dag1.BND</Link>
@@ -2714,6 +2717,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\DEA\world1\dea1.BAR">
       <Link>Data\assets\worlds\DEA\world1\dea1.BAR</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\DEA\world1\dea1.BND">
       <Link>Data\assets\worlds\DEA\world1\dea1.BND</Link>
@@ -3842,6 +3846,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\END\world1\end1.bar">
       <Link>Data\assets\worlds\END\world1\end1.bar</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\END\world1\end1.bnd">
       <Link>Data\assets\worlds\END\world1\end1.bnd</Link>
@@ -4346,6 +4351,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\FEL\world1\fel1.BAR">
       <Link>Data\assets\worlds\FEL\world1\fel1.BAR</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\FEL\world1\fel1.BND">
       <Link>Data\assets\worlds\FEL\world1\fel1.BND</Link>
@@ -5141,6 +5147,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\GEO\world1\geo1.bar">
       <Link>Data\assets\worlds\GEO\world1\geo1.bar</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\GEO\world1\geo1.bnd">
       <Link>Data\assets\worlds\GEO\world1\geo1.bnd</Link>
@@ -6179,6 +6186,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\HOT\world1\hoth.bar">
       <Link>Data\assets\worlds\HOT\world1\hoth.bar</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\HOT\world1\hoth.bnd">
       <Link>Data\assets\worlds\HOT\world1\hoth.bnd</Link>
@@ -6992,6 +7000,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\KAM\world1\kamino1.bar">
       <Link>Data\assets\worlds\KAM\world1\kamino1.bar</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\KAM\world1\kamino1.bnd">
       <Link>Data\assets\worlds\KAM\world1\kamino1.bnd</Link>
@@ -7922,6 +7931,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\KAS\world2\kas2.bar">
       <Link>Data\assets\worlds\KAS\world2\kas2.bar</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\KAS\world2\kas2.bnd">
       <Link>Data\assets\worlds\KAS\world2\kas2.bnd</Link>
@@ -8681,6 +8691,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\MUS\world1\mus1.BAR">
       <Link>Data\assets\worlds\MUS\world1\mus1.BAR</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\MUS\world1\mus1.BND">
       <Link>Data\assets\worlds\MUS\world1\mus1.BND</Link>
@@ -9527,6 +9538,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\MYG\world1\myg1.BAR">
       <Link>Data\assets\worlds\MYG\world1\myg1.BAR</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\MYG\world1\myg1.BND">
       <Link>Data\assets\worlds\MYG\world1\myg1.BND</Link>
@@ -10583,6 +10595,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\NAB\world2\naboo2.bar">
       <Link>Data\assets\worlds\NAB\world2\naboo2.bar</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\NAB\world2\naboo2.bnd">
       <Link>Data\assets\worlds\NAB\world2\naboo2.bnd</Link>
@@ -11648,6 +11661,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\POL\world1\pol1.BAR">
       <Link>Data\assets\worlds\POL\world1\pol1.BAR</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\POL\world1\pol1.BND">
       <Link>Data\assets\worlds\POL\world1\pol1.BND</Link>
@@ -12566,6 +12580,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\TAN\world1\tan1.BAR">
       <Link>Data\assets\worlds\TAN\world1\tan1.BAR</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\TAN\world1\tan1.BND">
       <Link>Data\assets\worlds\TAN\world1\tan1.BND</Link>
@@ -14315,6 +14330,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\TAT\world2\tat2.bar">
       <Link>Data\assets\worlds\TAT\world2\tat2.bar</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\TAT\world2\tat2.bnd">
       <Link>Data\assets\worlds\TAT\world2\tat2.bnd</Link>
@@ -14564,6 +14580,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\TAT\World3\tat3.BAR">
       <Link>Data\assets\worlds\TAT\World3\tat3.BAR</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\TAT\World3\tat3.BND">
       <Link>Data\assets\worlds\TAT\World3\tat3.BND</Link>
@@ -15509,6 +15526,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\UTA\world\uta1.BAR">
       <Link>Data\assets\worlds\UTA\world\uta1.BAR</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\UTA\world\uta1.BND">
       <Link>Data\assets\worlds\UTA\world\uta1.BND</Link>
@@ -16700,6 +16718,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\YAV\world1\yavin1.bar">
       <Link>Data\assets\worlds\YAV\world1\yavin1.bar</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\YAV\world1\yavin1.bnd">
       <Link>Data\assets\worlds\YAV\world1\yavin1.bnd</Link>
@@ -17000,6 +17019,7 @@
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\YAV\world2\yav2.BAR">
       <Link>Data\assets\worlds\YAV\world2\yav2.BAR</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="C:\BF2_ModTools\assets\worlds\YAV\world2\yav2.bnd">
       <Link>Data\assets\worlds\YAV\world2\yav2.bnd</Link>
