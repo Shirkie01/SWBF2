@@ -4,9 +4,9 @@ using SWBF2.Serialization;
 namespace SWBF2.UnitTests.Serialization
 {
     [TestClass]
-    public class BarrierTests : BaseFormatterTest<Barrier>
+    public class HintTests : BaseFormatterTest<Hint>
     {
-        public BarrierTests() : base(new BarrierFormatter(), "BAR")
+        public HintTests() : base(new HintFormatter(), "HNT")
         {
         }
 
@@ -107,7 +107,7 @@ namespace SWBF2.UnitTests.Serialization
         }
 
         [TestMethod]
-        public void Yavin1Test()
+        public void YavinTest()
         {
             DeserializeSerializeTest("YAV");
         }

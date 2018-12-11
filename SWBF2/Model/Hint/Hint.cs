@@ -13,6 +13,8 @@
 
         public HintMode HintMode;
 
+        public string CommandPost;
+
         public Hint(string name, HintType type)
         {
             Name = name;

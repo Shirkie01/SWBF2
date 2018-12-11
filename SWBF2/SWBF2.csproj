@@ -82,6 +82,7 @@
     <Compile Include="Model\World.cs" />
     <Compile Include="Model\WorldExtents.cs" />
     <Compile Include="Serialization\BarrierFormatter.cs" />
+    <Compile Include="Serialization\HintFormatter.cs" />
     <Compile Include="Serialization\ITypedFormatter.cs" />
     <Compile Include="Serialization\Terrain\TerrainFormatter.cs" />
     <Compile Include="Model\Terrain\TerrainHeader.cs" />

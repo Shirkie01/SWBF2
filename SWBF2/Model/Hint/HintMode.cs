@@ -2,6 +2,6 @@
 {
     public enum HintMode
     {
-        None, Attack, Defend, Both
+        None = 0, Attack = 1, Defend = 2, Both = Attack | Defend
     }
 }
