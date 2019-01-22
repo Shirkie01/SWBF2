@@ -38,7 +38,7 @@
       <HintPath>lib\LibSWBF2.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.8\lib\net35-full\log4net.dll</HintPath>
+      <HintPath>$(SolutionDir)\packages\log4net.2.0.8\lib\net35-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -72,7 +72,7 @@
     <Compile Include="Model\Sector\Sector.cs" />
     <Compile Include="Model\GameMode.cs" />
     <Compile Include="Model\GameObject.cs" />
-    <Compile Include="Model\Hint\Hint.cs" />
+    <Compile Include="Model\Hint\HintNode.cs" />
     <Compile Include="Model\Hint\HintMode.cs" />
     <Compile Include="Model\Hint\PrimaryStance.cs" />
     <Compile Include="Model\Hint\SecondaryStance.cs" />
