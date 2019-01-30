@@ -68,8 +68,6 @@
     <Compile Include="Model\Plans\Connection.cs" />
     <Compile Include="Model\Plans\Hub.cs" />
     <Compile Include="Model\Light\PS2BlendMode.cs" />
-    <Compile Include="Model\Sector\Portal.cs" />
-    <Compile Include="Model\Sector\Sector.cs" />
     <Compile Include="Model\GameMode.cs" />
     <Compile Include="Model\GameObject.cs" />
     <Compile Include="Model\Hint\HintNode.cs" />
@@ -85,6 +83,8 @@
     <Compile Include="Model\Path\PathSpeedType.cs" />
     <Compile Include="Model\Path\PathType.cs" />
     <Compile Include="Model\Path\SplineType.cs" />
+    <Compile Include="Model\Portal\Portal.cs" />
+    <Compile Include="Model\Portal\Sector.cs" />
     <Compile Include="Model\Terrain\FoliageType.cs" />
     <Compile Include="Model\Terrain\InGameOptions.cs" />
     <Compile Include="Model\Terrain\TerrainBlock.cs" />
