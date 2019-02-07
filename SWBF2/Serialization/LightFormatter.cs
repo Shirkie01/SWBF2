@@ -19,20 +19,39 @@ namespace SWBF2.Serialization
                     startIndex = line.IndexOf(", ");
                     var lightId = int.Parse(line.Substring(startIndex, line.LastIndexOf(")") - startIndex));
 
-                    Light light = new Light(lightName, lightId);
-
                     // {
                     reader.ReadLine();
 
                     line = reader.ReadLine();
-                    light.Rotation = Quaternion.Parse(line);
+                    var lightRotation = Quaternion.Parse(line);
 
                     line = reader.ReadLine();
-                    light.Position = Vector3.Parse(line);
+                    var lightPosition = Vector3.Parse(line);
 
                     line = reader.ReadLine();
                     startIndex = line.IndexOf("(");
-                    light.Type = (LightType)int.Parse(line.Substring(startIndex, line.LastIndexOf(")") - startIndex));
+                    var lightType = (LightType)int.Parse(line.Substring(startIndex, line.LastIndexOf(")") - startIndex));
+
+                    Light light = null;
+                    switch (lightType)
+                    {
+                        case LightType.Spot:
+                            light = new SpotLight();
+                            break;
+
+                        case LightType.Omni:
+                            light = new OmniLight();
+                            break;
+
+                        case LightType.Directional:
+                            light = new DirectionalLight();
+                            break;
+                    }
+
+                    light.Name = lightName;
+                    light.Id = lightId;
+                    light.Rotation = lightRotation;
+                    light.Position = lightPosition;
 
                     line = reader.ReadLine();
 
@@ -58,36 +77,37 @@ namespace SWBF2.Serialization
                     writer.WriteLine(string.Format("\tType({0});", light.Type));
                     writer.WriteLine(string.Format("\tColor({0});", light.Color));
 
-                    if ((int)light.Type == 1)
+                    if (light.Type == LightType.Directional)
                     {
-                        if (light.CastShadow)
+                        var directionalLight = (DirectionalLight)light;
+                        if (directionalLight.CastShadow)
                         {
                             writer.WriteLine("\tCastShadow();");
                         }
 
-                        if (light.CastSpecular)
+                        if (directionalLight.CastSpecular)
                         {
                             writer.WriteLine("\tCastSpecular(1);");
                         }
 
-                        if (light.Static)
+                        if (directionalLight.Static)
                         {
                             writer.WriteLine("\tStatic();");
                         }
 
-                        if (light.Region != null)
+                        if (directionalLight.BoundingRegion != null)
                         {
-                            writer.WriteLine(string.Format("\tRegion(\"{0}\")", light.Region.Name));
+                            writer.WriteLine(string.Format("\tRegion(\"{0}\")", directionalLight.BoundingRegion.Name));
                         }
 
-                        writer.WriteLine(string.Format("\tPS2BlendMode({0})", light.ps2BlendMode));
+                        writer.WriteLine(string.Format("\tPS2BlendMode({0})", directionalLight.PS2BlendMode));
 
-                        writer.WriteLine(string.Format("\tTileUV({0}, {1})", light.TileUV.X, light.TileUV.Y));
-                        writer.WriteLine(string.Format("\tOffsetUV({0}, {1})", light.OffsetUV.X, light.OffsetUV.Y));
+                        writer.WriteLine(string.Format("\tTileUV({0}, {1})", directionalLight.TileUV.X, directionalLight.TileUV.Y));
+                        writer.WriteLine(string.Format("\tOffsetUV({0}, {1})", directionalLight.OffsetUV.X, directionalLight.OffsetUV.Y));
                     }
-                    else if ((int)light.Type == 2)
+                    else if (light.Type == LightType.Omni)
                     {
-                        writer.WriteLine(string.Format("\tRange({0})", light.Range));
+                        writer.WriteLine(string.Format("\tRange({0})", ((OmniLight)light).Range));
                     }
 
                     writer.WriteLine("}");

@@ -12,6 +12,10 @@ namespace SWBF2
         public IList<PositionKey> PositionKeys { get; } = new List<PositionKey>();
         public IList<RotationKey> RotationKeys { get; } = new List<RotationKey>();
 
+        public Animation()
+        {
+        }
+
         public Animation(string name, float runtime, bool loop, bool localTranslation)
         {
             Name = name;

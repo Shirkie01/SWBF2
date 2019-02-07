@@ -21,12 +21,24 @@ namespace SWBF2.Serialization
 
                     foreach (var positionKey in animation.PositionKeys)
                     {
-                        writer.WriteLine(string.Format("AddPositionKey({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10});", positionKey.Time, positionKey.Position.x, positionKey.Position.y, positionKey.Position.z, positionKey.Transition, positionKey.SplinePosition.x, positionKey.SplinePosition.y, positionKey.SplinePosition.z));
+                        writer.WriteLine(
+                            string.Format("AddPositionKey({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10});",
+                            positionKey.Time,
+                            positionKey.Position.X, positionKey.Position.Y, positionKey.Position.Z,
+                            positionKey.Transition,
+                            positionKey.StartSplinePosition.X, positionKey.StartSplinePosition.Y, positionKey.StartSplinePosition.Z,
+                            positionKey.EndSplinePosition.X, positionKey.EndSplinePosition.Y, positionKey.EndSplinePosition.Z));
                     }
                     foreach (var rotationKey in animation.RotationKeys)
                     {
                         var angles = rotationKey.Rotation.ToEulerAngles();
-                        writer.WriteLine(string.Format("AddPositionKey({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10});", rotationKey.Time, angles.x, angles.y, angles.z, rotationKey.Transition, rotationKey.SplinePosition.x, rotationKey.SplinePosition.y, rotationKey.SplinePosition.z));
+                        writer.WriteLine(
+                            string.Format("AddPositionKey({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10});",
+                            rotationKey.Time,
+                            angles.X, angles.Y, angles.Z,
+                            rotationKey.Transition,
+                            rotationKey.StartSplinePosition.X, rotationKey.StartSplinePosition.Y, rotationKey.StartSplinePosition.Z,
+                            rotationKey.EndSplinePosition.X, rotationKey.EndSplinePosition.Y, rotationKey.EndSplinePosition.Z));
                     }
                     writer.WriteLine();
                 }

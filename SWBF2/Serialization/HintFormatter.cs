@@ -3,12 +3,12 @@ using System.IO;
 
 namespace SWBF2.Serialization
 {
-    public class HintFormatter : ITypedFormatter<IList<Hint>>
+    public class HintFormatter : ITypedFormatter<IList<HintNode>>
     {
-        public IList<Hint> Deserialize(Stream serializationStream)
+        public IList<HintNode> Deserialize(Stream serializationStream)
         {
-            var hints = new List<Hint>();
-            using (var reader = new StreamReader(serializationStream))
+            var hints = new List<HintNode>();
+            using (var reader = new SWBF2Reader(serializationStream))
             {
                 // Blank
                 var line = reader.ReadLine();
@@ -16,52 +16,50 @@ namespace SWBF2.Serialization
                 while ((line = reader.ReadLine()) != null)
                 {
                     // Constructor
-                    line = GetSubstringValue(line);
+                    line = reader.TrimLine(line);
                     line = line.Replace("\"", "").Replace(", ", ",");
                     var cctorValues = line.Split(',');
 
-                    var hint = new Hint(cctorValues[0], (HintType)int.Parse(cctorValues[1]));
+                    var hint = new HintNode(cctorValues[0], (HintType)int.Parse(cctorValues[1]));
 
                     // Open Brace
                     line = reader.ReadLine();
 
                     // Position
-                    line = reader.ReadLine();
-                    hint.Position = Vector3.Parse(line);
+                    hint.Position = reader.ReadVector3();
 
                     // Rotation
-                    line = reader.ReadLine();
-                    hint.Rotation = Quaternion.Parse(line);
+                    hint.Rotation = reader.ReadQuaternion();
 
                     // Radius if available
                     line = reader.ReadLine();
                     if (line.Contains("Radius"))
                     {
-                        hint.Radius = double.Parse(GetSubstringValue(line));
+                        hint.Radius = float.Parse(reader.TrimLine(line));
                         line = reader.ReadLine();
                     }
 
                     // PrimaryStance if available
                     if (line.Contains("PrimaryStance"))
                     {
-                        hint.PrimaryStance = (PrimaryStance)(int)(double.Parse(GetSubstringValue(line)));
+                        hint.PrimaryStance = (PrimaryStance)(int)(double.Parse(reader.TrimLine(line)));
                         line = reader.ReadLine();
                     }
 
                     // SecondaryStance if available
                     if (line.Contains("SecondaryStance"))
                     {
-                        hint.SecondaryStance = (SecondaryStance)int.Parse(GetSubstringValue(line));
+                        hint.SecondaryStance = (SecondaryStance)int.Parse(reader.TrimLine(line));
                         line = reader.ReadLine();
                     }
 
-                    hint.HintMode = (HintMode)int.Parse(GetSubstringValue(line));
+                    hint.HintMode = (HintMode)int.Parse(reader.TrimLine(line));
 
                     // CommandPost if available, closing brace otherwise
                     line = reader.ReadLine();
                     if (line.Contains("CommandPost"))
                     {
-                        hint.CommandPost = GetSubstringValue(line).Replace("\"", "");
+                        hint.CommandPost = reader.TrimLine(line, '"');
                         reader.ReadLine();
                     }
 
@@ -77,44 +75,38 @@ namespace SWBF2.Serialization
             throw new InvalidDataException("Could not correctly parse hints.");
         }
 
-        private string GetSubstringValue(string s)
+        public void Serialize(Stream serializationStream, IList<HintNode> obj)
         {
-            var startIndex = s.IndexOf("(") + 1;
-            return s.Substring(startIndex, s.IndexOf(")") - startIndex);
-        }
-
-        public void Serialize(Stream serializationStream, IList<Hint> obj)
-        {
-            using (var writer = new StreamWriter(serializationStream))
+            using (var writer = new SWBF2Writer(serializationStream))
             {
                 foreach (var hint in obj)
                 {
                     writer.WriteLine();
                     writer.WriteLine(string.Format("Hint(\"{0}\", \"{1}\")", hint.Name, (int)hint.Type));
                     writer.WriteLine("{");
-                    writer.WriteLine(string.Format("\tPosition({0});", hint.Position));
-                    writer.WriteLine(string.Format("\tRotation({0});", hint.Rotation));
+                    writer.WriteVector3("Position", hint.Position);
+                    writer.WriteQuaternion("Rotation", hint.Rotation);
 
                     if (hint.Radius != 0)
                     {
-                        writer.WriteLine(string.Format("\tRadius({0:F6});", hint.Radius));
+                        writer.WriteDouble("Radius", hint.Radius);
                     }
 
                     if (hint.PrimaryStance != PrimaryStance.None)
                     {
-                        writer.WriteLine(string.Format("\tPrimaryStance({0});", (int)hint.PrimaryStance));
+                        writer.WriteEnum("PrimaryStance", hint.PrimaryStance);
                     }
 
                     if (hint.SecondaryStance != SecondaryStance.None)
                     {
-                        writer.WriteLine(string.Format("\tSecondaryStance({0});", (int)hint.SecondaryStance));
+                        writer.WriteEnum("SecondaryStance", hint.SecondaryStance);
                     }
 
-                    writer.WriteLine(string.Format("\tMode({0});", (int)hint.HintMode));
+                    writer.WriteEnum("Mode", hint.HintMode);
 
                     if (!string.IsNullOrWhiteSpace(hint.CommandPost))
                     {
-                        writer.WriteLine(string.Format("\tCommandPost(\"{0}\");", hint.CommandPost));
+                        writer.WriteString("CommandPost", hint.CommandPost);
                     }
 
                     writer.WriteLine("}");

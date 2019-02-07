@@ -8,7 +8,11 @@
         public string End { get; set; }
 
         public int Flag { get; set; }
-        public int DynamicGroup { get; set; }
+        public int Dynamic { get; set; }
+
+        public bool Jump { get; set; }
+        public bool JetJump { get; set; }
+        public bool OneWay { get; set; }
 
         public Connection(string name)
         {

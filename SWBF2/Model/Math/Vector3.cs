@@ -5,9 +5,9 @@ namespace SWBF2
 {
     public struct Vector3
     {
-        public readonly double x, y, z;
+        public readonly double X, Y, Z;
 
-        public static readonly Vector3 zero = new Vector3(0, 0, 0);
+        public static readonly Vector3 Zero = new Vector3(0, 0, 0);
 
         /// <summary>
         /// Parses doubles
@@ -16,9 +16,9 @@ namespace SWBF2
 
         public Vector3(double x, double y, double z)
         {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
         }
 
         public static Vector3 Parse(string s)
@@ -53,7 +53,7 @@ namespace SWBF2
 
         public override string ToString()
         {
-            return string.Format("{0:F6}, {1:F6}, {2:F6}", x, y, z);
+            return string.Format("{0:F6}, {1:F6}, {2:F6}", X, Y, Z);
         }
     }
 }

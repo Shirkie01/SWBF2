@@ -8,7 +8,7 @@ namespace SWBF2.Serialization
         public IList<Boundary> Deserialize(Stream serializationStream)
         {
             var boundaries = new List<Boundary>();
-            using (var reader = new StreamReader(serializationStream))
+            using (var reader = new SWBF2Reader(serializationStream))
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)
@@ -20,9 +20,7 @@ namespace SWBF2.Serialization
 
                     while ((line = reader.ReadLine()) != null && line.Contains("Path"))
                     {
-                        var startIndex = line.IndexOf("\"") + 1;
-                        line = line.Substring(startIndex, line.LastIndexOf("\"") - startIndex);
-
+                        line = reader.TrimLine(line, '"');
                         boundary.Paths.Add(new Path(line));
                     }
 
@@ -37,7 +35,7 @@ namespace SWBF2.Serialization
 
         public void Serialize(Stream serializationStream, IList<Boundary> obj)
         {
-            using (var writer = new StreamWriter(serializationStream))
+            using (var writer = new SWBF2Writer(serializationStream))
             {
                 foreach (var boundary in obj)
                 {
@@ -45,7 +43,7 @@ namespace SWBF2.Serialization
                     writer.WriteLine("{");
                     foreach (var path in boundary.Paths)
                     {
-                        writer.WriteLine("\tPath(\"{0}\");", path.Name);
+                        writer.WriteString("Path", path.Name);
                     }
                     writer.WriteLine("}");
                 }

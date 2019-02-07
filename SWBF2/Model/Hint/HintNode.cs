@@ -1,26 +1,30 @@
-﻿namespace SWBF2
+﻿using System.Collections.Generic;
+
+namespace SWBF2
 {
-    public class Hint
+    public class HintNode
     {
-        public Vector3 Position;
-        public Quaternion Rotation;
+        public string Name { get; set; }
+        public HintType Type { get; set; }
+        public Vector3 Position { get; set; } = Vector3.Zero;
+        public Quaternion Rotation { get; set; } = Quaternion.Identity;
+        public double Radius { get; set; }
 
-        public string Name;
-        public HintType Type;
+        public PrimaryStance PrimaryStance { get; set; }
+        public SecondaryStance SecondaryStance { get; set; }
 
-        public PrimaryStance PrimaryStance;
-        public SecondaryStance SecondaryStance;
+        public HintMode HintMode { get; set; }
 
-        public HintMode HintMode;
+        public string CommandPost { get; set; }
+        public string Building { get; set; }
+        public string Target { get; set; }
 
-        public string CommandPost;
+        public IList<string> Connections { get; } = new List<string>();
 
-        public Hint(string name, HintType type)
+        public HintNode(string name, HintType type)
         {
             Name = name;
             Type = type;
         }
-
-        public double Radius { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using SWBF2.Serialization;
 namespace SWBF2.UnitTests.Serialization
 {
     [TestClass]
-    public class HintTests : BaseFormatterTest<Hint>
+    public class HintTests : BaseFormatterTest<HintNode>
     {
         public HintTests() : base(new HintFormatter(), "HNT")
         {

@@ -5,9 +5,9 @@ namespace SWBF2
 {
     public struct Quaternion
     {
-        public readonly double w, x, y, z;
+        public readonly double W, X, Y, Z;
 
-        public static readonly Quaternion identity = new Quaternion(0, 0, 0, 1);
+        public static readonly Quaternion Identity = new Quaternion(0, 0, 0, 1);
 
         /// <summary>
         /// Parses doubles
@@ -16,10 +16,10 @@ namespace SWBF2
 
         public Quaternion(double w, double x, double y, double z)
         {
-            this.w = w;
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            this.W = w;
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
         }
 
         public static Quaternion Parse(string s)
@@ -41,16 +41,33 @@ namespace SWBF2
 
         public override string ToString()
         {
-            return string.Format("{0:F6}, {1:F6}, {2:F6}, {3:F6}", w, x, y, z);
+            return string.Format("{0:F6}, {1:F6}, {2:F6}, {3:F6}", W, X, Y, Z);
         }
 
         public Vector3 ToEulerAngles()
         {
-            var eulerX = Math.Atan2(2 * (w * x + y * z), 1 - 2 * (x * x + y * y));
-            var eulerY = Math.Asin(2 * (w * y - z * x));
-            var eulerZ = Math.Atan2(2 * (w * z + x * y), 1 - 2 * (y * y + z * z));
+            var eulerX = Math.Atan2(2 * (W * X + Y * Z), 1 - 2 * (X * X + Y * Y));
+            var eulerY = Math.Asin(2 * (W * Y - Z * X));
+            var eulerZ = Math.Atan2(2 * (W * Z + X * Y), 1 - 2 * (Y * Y + Z * Z));
 
             return new Vector3(eulerX, eulerY, eulerZ);
+        }
+
+        public static Quaternion FromEulerAngles(double yaw, double pitch, double roll)
+        {
+            // Abbreviations for the various angular functions
+            double cy = Math.Cos(yaw * 0.5);
+            double sy = Math.Sin(yaw * 0.5);
+            double cp = Math.Cos(pitch * 0.5);
+            double sp = Math.Sin(pitch * 0.5);
+            double cr = Math.Cos(roll * 0.5);
+            double sr = Math.Sin(roll * 0.5);
+
+            var qw = cy * cp * cr + sy * sp * sr;
+            var qx = cy * cp * sr - sy * sp * cr;
+            var qy = sy * cp * sr + cy * sp * cr;
+            var qz = sy * cp * cr - cy * sp * sr;
+            return new Quaternion(qw, qx, qy, qz);
         }
     }
 }

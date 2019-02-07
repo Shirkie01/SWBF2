@@ -8,16 +8,13 @@ namespace SWBF2.Serialization
         public IList<Region> Deserialize(Stream serializationStream)
         {
             IList<Region> regions = new List<Region>();
-            using (var reader = new StreamReader(serializationStream))
+            using (var reader = new SWBF2Reader(serializationStream))
             {
                 // version
                 var line = reader.ReadLine();
 
                 // count
-                line = reader.ReadLine();
-                int startIndex = line.IndexOf("(") + 1;
-                line = line.Substring(startIndex, line.IndexOf(")") - startIndex);
-                int regionCount = int.Parse(line);
+                int regionCount = reader.ReadInt();
 
                 reader.ReadLine();
 
@@ -26,7 +23,7 @@ namespace SWBF2.Serialization
                     // region name and id
                     line = reader.ReadLine();
 
-                    startIndex = line.IndexOf("\"") + 1;
+                    var startIndex = line.IndexOf("\"") + 1;
                     string regionType = line.Substring(startIndex, line.LastIndexOf("\"") - startIndex);
 
                     startIndex = line.IndexOf(", ") + 1;
@@ -46,13 +43,11 @@ namespace SWBF2.Serialization
                         line = reader.ReadLine();
                     }
 
-                    region.Position = Vector3.Parse(line.Substring(line.IndexOf("(")));
+                    // Needs to be parsed due to optional parameter above
+                    region.Position = Vector3.Parse(line);
 
-                    line = reader.ReadLine();
-                    region.Rotation = Quaternion.Parse(line.Substring(line.IndexOf("(")));
-
-                    line = reader.ReadLine();
-                    region.Size = Vector3.Parse(line.Substring(line.IndexOf("(")));
+                    region.Rotation = reader.ReadQuaternion();
+                    region.Size = reader.ReadVector3();
 
                     line = reader.ReadLine();
 
@@ -88,7 +83,7 @@ namespace SWBF2.Serialization
 
         public void Serialize(Stream serializationStream, IList<Region> regions)
         {
-            using (var writer = new StreamWriter(serializationStream))
+            using (var writer = new SWBF2Writer(serializationStream))
             {
                 writer.WriteLine("Version(1);");
                 writer.WriteLine($"RegionCount({regions.Count});");
@@ -104,18 +99,19 @@ namespace SWBF2.Serialization
                         writer.WriteLine(string.Format("\tLayer({0});", region.LayerId));
                     }
 
-                    writer.WriteLine(string.Format("\tPosition({0});", region.Position));
-                    writer.WriteLine(string.Format("\tRotation({0});", region.Rotation));
-                    writer.WriteLine(string.Format("\tSize({0});", region.Size));
+                    writer.WriteVector3(nameof(region.Position), region.Position);
+                    writer.WriteQuaternion(nameof(region.Rotation), region.Rotation);
+                    writer.WriteVector3(nameof(region.Size), region.Size);
 
-                    if (!string.IsNullOrEmpty(region.Name))
+                    // We print if it is empty, but not null
+                    if (region.Name != null)
                     {
-                        writer.WriteLine(string.Format("\tName(\"{0}\");", region.Name));
+                        writer.WriteString("Name", region.Name);
                     }
 
                     if (region.NextIsGrouped)
                     {
-                        writer.WriteLine("\tNextIsGrouped();");
+                        writer.WriteBool("NextIsGrouped");
                     }
                     writer.WriteLine("}");
                 }

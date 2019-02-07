@@ -2,6 +2,6 @@
 {
     public enum SplineType
     {
-        None, Linear, Hermite, CR
+        Linear = 1, Hermite = 2, CatmullRom = 3
     }
 }

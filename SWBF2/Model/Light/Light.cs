@@ -2,31 +2,19 @@
 
 namespace SWBF2
 {
-    public class Light
+    public abstract class Light
     {
-        public string Name;
-        public int Id { get; }
+        public string Name { get; set; }
+        public int Id { get; set; }
         public Quaternion Rotation;
         public Vector3 Position;
-        public LightType Type;
+        public abstract LightType Type { get; }
         public bool CastShadow;
-        public bool Static;
-        public string Texture;
-        public PointF TileUV;
-        public PointF OffsetUV;
-        public bool Wrap;
-        public Color Color;
-        public bool CastSpecular;
-        public bool PS2Overbright;
-        public Region Region;
-        public PS2BlendMode ps2BlendMode;
-
-        public float Range;
-
-        public Light(string name, int id)
-        {
-            Name = name;
-            Id = id;
-        }
+        public bool Static { get; } = true;
+        public string TextureName { get; set; }
+        public bool WrapTexture { get; set; }
+        public Color Color { get; } = Color.White;
+        public bool CastSpecular { get; set; }
+        public bool PS2Overbright { get; set; }
     }
 }

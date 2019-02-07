@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +32,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LibSWBF2, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -53,6 +55,7 @@
     <Compile Include="Model\Animation\AnimationGroup.cs" />
     <Compile Include="Model\Animation\AnimationKey.cs" />
     <Compile Include="Model\Animation\AnimationTransitionType.cs" />
+    <Compile Include="Model\Animation\Hierarchy.cs" />
     <Compile Include="Model\Animation\PositionKey.cs" />
     <Compile Include="Model\Animation\RotationKey.cs" />
     <Compile Include="Model\Barrier.cs" />
@@ -61,12 +64,17 @@
     <Compile Include="Model\Camera.cs" />
     <Compile Include="Model\Encounter.cs" />
     <Compile Include="Model\Group.cs" />
+    <Compile Include="Model\Light\DirectionalLight.cs" />
     <Compile Include="Model\Light\Light.cs" />
     <Compile Include="Model\Light\LightType.cs" />
+    <Compile Include="Model\Light\OmniLight.cs" />
+    <Compile Include="Model\Light\SpotLight.cs" />
+    <Compile Include="Model\Light\SpotLightCone.cs" />
     <Compile Include="Model\LineRegion.cs" />
-    <Compile Include="Model\Plans\BranchWeight.cs" />
-    <Compile Include="Model\Plans\Connection.cs" />
-    <Compile Include="Model\Plans\Hub.cs" />
+    <Compile Include="Model\MovementType.cs" />
+    <Compile Include="Model\Plan\BranchWeight.cs" />
+    <Compile Include="Model\Plan\Connection.cs" />
+    <Compile Include="Model\Plan\Hub.cs" />
     <Compile Include="Model\Light\PS2BlendMode.cs" />
     <Compile Include="Model\GameMode.cs" />
     <Compile Include="Model\GameObject.cs" />
@@ -99,20 +107,21 @@
     <Compile Include="Model\World.cs" />
     <Compile Include="Model\WorldExtents.cs" />
     <Compile Include="Serialization\AnimationFormatter.cs" />
-    <Compile Include="Serialization\AnimationGroupFormatter.cs" />
     <Compile Include="Serialization\BarrierFormatter.cs" />
     <Compile Include="Serialization\BoundaryFormatter.cs" />
     <Compile Include="Serialization\HintFormatter.cs" />
     <Compile Include="Serialization\ITypedFormatter.cs" />
     <Compile Include="Serialization\LightFormatter.cs" />
     <Compile Include="Serialization\ObjectFormatter.cs" />
-    <Compile Include="Serialization\PathFormatter.cs" />
     <Compile Include="Serialization\RegionFormatter.cs" />
+    <Compile Include="Serialization\SWBF2Reader.cs" />
+    <Compile Include="Serialization\SWBF2Writer.cs" />
     <Compile Include="Serialization\Terrain\TerrainFormatter.cs" />
     <Compile Include="Model\Terrain\TerrainHeader.cs" />
     <Compile Include="Serialization\Terrain\TerrainReader.cs" />
     <Compile Include="Serialization\Terrain\TerrainWriter.cs" />
     <Compile Include="Serialization\WorldFormatter.cs" />
+    <Compile Include="Serialization\PathFormatter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

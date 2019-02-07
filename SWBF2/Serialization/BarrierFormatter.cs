@@ -23,7 +23,8 @@ namespace SWBF2.Serialization
                     line = reader.ReadLine();
                     startIndex = line.IndexOf("\"") + 1;
                     var name = line.Substring(startIndex, line.LastIndexOf("\"") - startIndex);
-                    var barrier = new Barrier(name);
+                    var barrier = new Barrier();
+                    barrier.Name = name;
 
                     if (!"{".Equals(reader.ReadLine()))
                     {
@@ -71,9 +72,9 @@ namespace SWBF2.Serialization
 
         public void Serialize(Stream serializationStream, IList<Barrier> barriers)
         {
-            using (var writer = new StreamWriter(serializationStream))
+            using (var writer = new SWBF2Writer(serializationStream))
             {
-                writer.WriteLine(string.Format("BarrierCount({0});", barriers.Count));
+                writer.WriteInt("BarrierCount", barriers.Count, 0);
                 writer.WriteLine();
 
                 for (int i = 0; i < barriers.Count; i++)
@@ -84,10 +85,10 @@ namespace SWBF2.Serialization
 
                     foreach (var corner in barrier.Corners)
                     {
-                        writer.WriteLine(string.Format("\tCorner({0});", corner));
+                        writer.WriteVector3("Corner", corner);
                     }
 
-                    writer.WriteLine(string.Format("\tFlag({0});", barrier.Flag));
+                    writer.WriteInt("Flag", barrier.Flag);
                     writer.WriteLine("}");
 
                     if (i != barriers.Count - 1)

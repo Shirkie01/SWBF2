@@ -4,6 +4,7 @@
     {
         public float Time;
         public AnimationTransitionType Transition;
-        public Vector3 SplinePosition;
+        public Vector3 StartSplinePosition;
+        public Vector3 EndSplinePosition;
     }
 }
