@@ -1,5 +1,4 @@
-﻿using log4net;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -8,8 +7,6 @@ namespace SWBF2
 {
     public class World
     {
-        private static readonly ILog logger = LogManager.GetLogger(typeof(World));
-
         public IList<GameMode> GameModes = new List<GameMode>();
         public IList<Layer> Layers = new List<Layer>();
         public Terrain Terrain { get; set; }
